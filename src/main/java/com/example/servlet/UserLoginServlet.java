@@ -2,6 +2,8 @@ package com.example.servlet;
 
 import com.example.entity.User;
 import com.example.repo.UserRepository;
+import com.example.security.TokenGenerator;
+import com.example.service.ApplicationUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.context.ContextLoaderListener;
 
@@ -17,6 +19,8 @@ import javax.servlet.http.*;
 public class UserLoginServlet extends HttpServlet {
     private static final long serialVersionUID = 1L;
 
+    private final TokenGenerator tokenGen = ContextLoaderListener.getCurrentWebApplicationContext().getBean(TokenGenerator.class);
+
     public UserLoginServlet() {
         super();
         log.info("constructor executed");
@@ -24,7 +28,7 @@ public class UserLoginServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String login = request.getParameter("username");
+        String login = request.getParameter("login");
         String password = request.getParameter("password");
 
 
@@ -36,12 +40,17 @@ public class UserLoginServlet extends HttpServlet {
 
             if (user != null) {
                 log.info("user '{}' logged in successfully", login);
+
+                ApplicationUtils.storeLoginedUser(request.getSession(), userRepository);
+                String token = tokenGen.GetToken(user.getId(), user.getLogin(), user.getRole());
+                ApplicationUtils.storeLoginedUserJwt(request.getSession(), token);
+
                 HttpSession session = request.getSession();
                 session.setAttribute("user", user);
                 destPage = "views/home.jsp";
             } else {
                 log.warn("the user '{}' with password'{}' login FAILED", login, password);
-                String message = "Неверный логин или пароль : Invalid username/password";
+                String message = "Неверный логин или пароль : Invalid login/password";
                 request.setAttribute("message", message);
             }
 

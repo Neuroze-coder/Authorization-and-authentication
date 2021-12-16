@@ -18,7 +18,7 @@
     <h1>Войти</h1>
     <form action="login" method="post">
         <label for="login">Login:</label>
-        <input name="username" size="30"/>
+        <input name="login" size="30"/>
         <br><br>
         <label for="password">Password:</label>
         <input type="password" name="password" size="30"/>

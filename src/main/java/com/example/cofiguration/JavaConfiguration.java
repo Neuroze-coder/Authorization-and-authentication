@@ -3,9 +3,11 @@ package com.example.cofiguration;
 import com.example.entity.User;
 import com.example.repo.UserRepository;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
+@ComponentScan(basePackages = "com.example.security")
 public class JavaConfiguration {
 
 

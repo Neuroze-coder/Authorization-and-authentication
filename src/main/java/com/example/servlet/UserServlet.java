@@ -31,7 +31,7 @@ public class UserServlet extends HttpServlet {
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        String login = request.getParameter("username");
+        String login = request.getParameter("login");
         String name = request.getParameter("name");
         String surname = request.getParameter("surname");
         String password = request.getParameter("password");
